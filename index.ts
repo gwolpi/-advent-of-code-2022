@@ -1,3 +1,4 @@
+import './extension-methods.ts'
 import {ensureDir} from "https://deno.land/std@0.166.0/fs/ensure_dir.ts";
 import {config} from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
 import {brightBlue as blue, brightYellow as yellow, underline as ul} from "https://deno.land/std@0.116.0/fmt/colors.ts";

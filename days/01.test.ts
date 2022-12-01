@@ -1,3 +1,4 @@
+import '../extension-methods.ts';
 import {p1, p2} from './01.ts';
 import {assertEquals} from "https://deno.land/std@0.166.0/testing/asserts.ts";
 
