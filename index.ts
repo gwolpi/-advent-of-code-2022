@@ -20,7 +20,7 @@ switch (cmd) {
 			const timerStart = performance.now();
 			const result = file[`p${partNumber}`](input);
 			const timerEnd = performance.now() - timerStart;
-			console.log(ul(blue(`${runningMsg} ${partNumber}.`)));
+			console.log(ul(blue(`${runningMsg} ${partNumber}:`)));
 			console.log(`${yellow('[Answer]\t')} ${result}`);
 			console.log(`${yellow('[Time]\t\t')} ~${timerEnd.toFixed(3)}ms\n`);
 		}
