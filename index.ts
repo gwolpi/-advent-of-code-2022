@@ -22,10 +22,9 @@ switch(cmd) {
       const timerEnd = performance.now() - timerStart;
       console.log(underline(`${runningDay} ${yellow(`${x}`)}`));
       console.log(`${yellow('[Answer]\t')} ${result}`);
-      console.log(`${yellow('[Time]\t\t')} ~${timerEnd.toFixed(3)}ms`);
+      console.log(`${yellow('[Time]\t\t')} ~${timerEnd.toFixed(3)}ms\n`);
     }
     runPart(1);
-    console.log('')
     runPart(2);
     break;
   }
