@@ -32,12 +32,6 @@ declare global {
 		 * Sorts the array numerically
 		 */
 		sortNums(): number[];
-
-		/**
-		 * Returns the first n elements of the array
-		 * @param amount {number} The amount of elements to take
-		 */
-		take(amount: number): Array<T>;
 	}
 }
 
@@ -63,10 +57,6 @@ Array.prototype.avg = function () {
 
 Array.prototype.sortNums = function () {
 	return this.sort((a, b) => a - b);
-}
-
-Array.prototype.take = function (amount) {
-	return this.slice(amount);
 }
 
 export {};
