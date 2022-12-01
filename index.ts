@@ -10,7 +10,7 @@ const env = config();
 switch(cmd) {
   case 'run': {
     const file = await import(`./days/${day}.ts`);
-    const response = await fetch(`https://adventofcode.com/2022/day/${dayNumber}/input`, { headers: { cookie: `session=${env.ADVENT_SESSION_TOKEN}` }});
+    const response = await fetch(`https://adventofcode.com/${env.ADVENT_YEAR}/day/${dayNumber}/input`, { headers: { cookie: `session=${env.ADVENT_SESSION_TOKEN}` }});
     if (!response.ok) throw new Error('Advent of Code Session Token not set');
     const input = await response.text();
     const runningDay = `${brightBlue('Running day')} ${brightYellow(dayNumber)} ${brightBlue('part')}`;
