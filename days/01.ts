@@ -1,5 +1,7 @@
-const processInput = (input: string): number[] => input.split('\n\n')
-    .map((elf) => elf.split('\n').reduce((curr: number, next: string) => curr + +next, 0));
+const processInput = (input: string): number[] => {
+  return input.split('\n\n')
+      .map((elf) => elf.split('\n').reduce((curr, next) => curr + +next, 0));
+};
 
 export const p1 = (input: string): number => Math.max(...processInput(input));
 

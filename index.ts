@@ -25,6 +25,7 @@ switch(cmd) {
       console.log(`${yellow('[Time]\t\t')} ~${timerEnd.toFixed(3)}ms`);
     }
     runPart(1);
+    console.log('')
     runPart(2);
     break;
   }
