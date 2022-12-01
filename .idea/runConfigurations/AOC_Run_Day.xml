@@ -1,0 +1,6 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="AOC Run Day" type="DenoConfigurationType" inputPath="$PROJECT_DIR$/index.ts" programParameters="run -A">
+    <option name="applicationArguments" value="run $FileNameWithoutExtension$" />
+    <method v="2" />
+  </configuration>
+</component>

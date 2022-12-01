@@ -1,10 +1,11 @@
 import { ensureDir } from "https://deno.land/std@0.166.0/fs/ensure_dir.ts";
 import { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
-import { brightYellow, underline, brightBlue } from "https://deno.land/std@0.116.0/fmt/colors.ts";
+import { brightYellow as yellow, underline, brightBlue as blue } from "https://deno.land/std@0.116.0/fmt/colors.ts";
 
-const [ cmd, dayNumber, partNumber ] = Deno.args;
-if (!dayNumber.match(/^\d{1,2}$/)) throw new Error('Day number provided is incorrect')
-const day = `${+dayNumber}`.padStart(2, '0');
+const [ cmd, dayArg, partNumber ] = Deno.args;
+const dayNumber = Number(dayArg);
+if (isNaN(dayNumber)) throw new Error('Day number provided is incorrect')
+const day = `${dayNumber}`.padStart(2, '0');
 const env = config();
 
 switch(cmd) {
@@ -13,21 +14,18 @@ switch(cmd) {
     const response = await fetch(`https://adventofcode.com/${env.ADVENT_YEAR}/day/${dayNumber}/input`, { headers: { cookie: `session=${env.ADVENT_SESSION_TOKEN}` }});
     if (!response.ok) throw new Error('Advent of Code Session Token not set');
     const input = await response.text();
-    const runningDay = `${brightBlue('Running day')} ${brightYellow(dayNumber)} ${brightBlue('part')}`;
-    if (!partNumber || +partNumber === 1) {
+    const runningDay = `${blue('Running day')} ${yellow(day)} ${blue('part')}`;
+    const runPart = (x?: number) => {
+      if (!(!partNumber || x === +partNumber)) return;
       const timerStart = performance.now();
-      console.log(underline(`${runningDay} ${brightYellow('1')}`));
-      console.log(`${brightYellow('[Answer]')} ${file.p1(input)}`);
+      const result = file[`p${x}`](input);
       const timerEnd = performance.now() - timerStart;
-      console.log(`${brightYellow('[Time]')} ~${timerEnd.toFixed(3)}ms`);
+      console.log(underline(`${runningDay} ${yellow(`${x}`)}`));
+      console.log(`${yellow('[Answer]\t')} ${result}`);
+      console.log(`${yellow('[Time]\t\t')} ~${timerEnd.toFixed(3)}ms`);
     }
-    if (!partNumber || +partNumber === 2) {
-      const timerStart = performance.now();
-      console.log(underline(`${runningDay} ${brightYellow('2')}`));
-      console.log(`${brightYellow('[Answer]')} ${file.p2(input)}`);
-      const timerEnd = performance.now() - timerStart;
-      console.log(`${brightYellow('[Time]')} ~${timerEnd.toFixed(3)}ms`);
-    }
+    runPart(1);
+    runPart(2);
     break;
   }
   case 'create': {
