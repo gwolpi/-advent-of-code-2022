@@ -36,7 +36,7 @@ declare global {
 }
 
 String.prototype.splitRows = function (length = 1) {
-	return this.split(new RegExp(`\\n{${length}}`));
+	return this.trim().split(new RegExp(`\\n{${length}}`));
 }
 
 Array.prototype.sum = function () {
