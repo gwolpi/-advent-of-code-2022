@@ -21,6 +21,5 @@ const getBadgeNumber = (letter: string): number => {
 	const a = 'a'.charCodeAt(0) - 1, z = 'z'.charCodeAt(0);
 	const A = 'A'.charCodeAt(0) - 1, Z = 'Z'.charCodeAt(0);
 	const tokenNumber = letter?.charCodeAt(0) ?? 0;
-	const padding = tokenNumber > A && tokenNumber <= Z ? A - (z - a) : a;
-	return tokenNumber - padding;
+	return tokenNumber - tokenNumber > A && tokenNumber <= Z ? A - (z - a) : a;
 }
