@@ -1,8 +1,7 @@
 import '../extension-methods.ts';
 
-const processLines = (input: string): [number, number, number, number][] =>
-	input.matchMap(/(\d+)-(\d+),(\d+)-(\d+)/g, ([, min1, max1, min2, max2]) =>
-		[+min1, +max1, +min2, +max2]);
+const processLines = (input: string): number[][] =>
+	input.matchMap(/(\d+)-(\d+),(\d+)-(\d+)/g, (x) => x.slice(1, 5).map(Number));
 
 export const p1 = (input: string): number =>
 	processLines(input).reduce((acc, [min1, max1, min2, max2]) =>
