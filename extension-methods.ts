@@ -5,6 +5,13 @@ declare global {
 		 * @param length {number} The amount of newline characters between each row.
 		 */
 		splitRows(length?: number): string[];
+
+		/**
+		 * Returns an array of matches from the string.
+		 * @param regex {RegExp} The regular expression to match.
+		 * @param map {Function} A function that maps the matches to a new value.
+		 */
+		matchMap<T>(regex: RegExp, map: (match: RegExpMatchArray) => T): T[];
 	}
 
 	export interface Array<T> {
@@ -35,7 +42,7 @@ declare global {
 
 		/**
 		 * Count the amount of elements which match the predicate
-		 * @param predicate {function} The predicate to match
+		 * @param predicate {Function} The predicate to match
 		 */
 		count(predicate?: (item: T) => boolean): number;
 	}
@@ -52,6 +59,10 @@ declare global {
 
 String.prototype.splitRows = function (length = 1) {
 	return this.trim().split(new RegExp(`\\n{${length}}`));
+}
+
+String.prototype.matchMap = function <T>(regex: RegExp, map: (match: RegExpMatchArray) => T) {
+	return [...this.matchAll(regex)].map(map);
 }
 
 Array.prototype.sum = function () {
