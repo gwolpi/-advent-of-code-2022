@@ -9,8 +9,7 @@ const getLetterNumber = (letter = ''): number => {
 
 export const p1 = (input: string): number => input.splitRows()
 	.reduce((acc: number, rucksack: string) => {
-		const c1 = [...rucksack];
-		const c2 = c1.splice(0, rucksack.length / 2);
+		const c1 = [...rucksack], c2 = c1.splice(0, c1.length / 2);
 		const letter = c1.find((letter: string) => c2.includes(letter));
 		return acc + getLetterNumber(letter);
 	}, 0);
