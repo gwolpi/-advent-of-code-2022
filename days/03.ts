@@ -18,7 +18,7 @@ export const p1 = (input: string): number => input.splitRows()
 export const p2 = (input: string): number => input.splitRows()
 	.reduce((acc, rucksack, i) => {
 		if (!(i % 3)) acc.push([rucksack])
-		else acc.at(-1).push(rucksack);
+		else acc.at(-1)?.push(rucksack);
 		return acc;
 	}, [] as string[][])
 	.map((elfGroup: string[]) => [...elfGroup[0]].find(x => elfGroup.every(elf => elf.includes(x))))
