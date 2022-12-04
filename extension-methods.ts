@@ -74,7 +74,7 @@ Array.prototype.sortNums = function () {
 	return this.sort((a, b) => a - b);
 }
 
-Array<T>.prototype.count = function <T>(predicate?: (item: T) => boolean) {
+Array.prototype.count = function <T>(predicate?: (item: T) => boolean) {
 	if (!predicate) return this.length;
 	return this.filter(predicate).length;
 }
