@@ -5,7 +5,7 @@ const processLines = (input: string): number[][] =>
 
 export const p1 = (input: string): number =>
 	processLines(input).reduce((acc, [min1, max1, min2, max2]) =>
-		acc + +((min1 >= min2 && max2 >= max1) || (min2 >= min1 && max1 >= max2)), 0);
+		acc + +((min1 >= min2 && max2 >= max1) || (max1 >= max2 && min2 >= min1)), 0);
 
 export const p2 = (input: string): number =>
 	processLines(input).reduce((acc, [min1, max1, min2, max2]) =>
