@@ -32,6 +32,21 @@ declare global {
 		 * Sorts the array numerically
 		 */
 		sortNums(): number[];
+
+		/**
+		 * Count the amount of elements which match the predicate
+		 * @param predicate {function} The predicate to match
+		 */
+		count(predicate?: (item: T) => boolean): number;
+	}
+
+	export interface ArrayConstructor {
+		/**
+		 * Creates an array with a range of numbers
+		 * @param start {number} The start of the range
+		 * @param end {number} The end of the range
+		 */
+		range(start: number, end: number): number[];
 	}
 }
 
@@ -57,6 +72,15 @@ Array.prototype.avg = function () {
 
 Array.prototype.sortNums = function () {
 	return this.sort((a, b) => a - b);
+}
+
+Array<T>.prototype.count = function <T>(predicate?: (item: T) => boolean) {
+	if (!predicate) return this.length;
+	return this.filter(predicate).length;
+}
+
+Array.range = function (start: number, end: number) {
+	return Array.from({length: end - start + 1}, (_, i) => start + i);
 }
 
 export {};
