@@ -3,8 +3,8 @@ import '../extension-methods.ts';
 const processInput = (input: string): [{[p: string]: string[]}, number[][]] =>{
   const [a, b] = input.split('\n\n');
   const stacks = a
-      .replace(/^ {4}\[|] \[|]? {2,3}\[?|] {4}$/gm, ',')
-      .replace(/\[|]|[\s\d]+$/gm, '')
+      .replace(/^ {4}\[|] \[|]? {3,}?\[?|] {4}$/gm, ',')
+      .replace(/\[|]|[ \d]+/gm, '')
       .split('\n')
       .reduce((acc, curr) => {
         curr.split(',').forEach((x, index) => {
