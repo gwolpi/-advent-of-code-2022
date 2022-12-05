@@ -1,16 +1,14 @@
 import '../extension-methods.ts';
 
-
 const processInput = (input: string, reverse: boolean): string =>{
-    const [a, b] = input.split('\n\n');
-    const stacks = a
-        .replace(/] \[|]? {2,3}\[?/gm, ',')
-        .replace(/\[|]|[ \d]+/gm, '')
+    let [a, b] = input.split('\n\n');
+    const emptyChars = /^ {4}| {5}| {4}$/;
+    while (emptyChars.test(a)) a = a.replace(emptyChars, ' [?] ');
+    const stacks = a.replace(/\[|]|[ \d]+/gm, '')
         .split('\n')
         .reduce((acc, curr) => {
-            curr.split(',').forEach((x, index) => {
-                if (!x) return;
-                (acc[index + 1] ||= []).unshift(x);
+            curr.split('').forEach((x, index) => {
+                if (x && x !== '?') (acc[index + 1] ||= []).unshift(x);
                 return acc;
             });
             return acc;
