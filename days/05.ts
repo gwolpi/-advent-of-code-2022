@@ -2,9 +2,9 @@ import '../extension-methods.ts';
 
 const processInput = (input: string, reverse: boolean): string =>{
     let [a, b] = input.split('\n\n');
-    const emptyChars = /^ {4}| {5}| {4}$/;
+    const emptyChars = /^ {4}| {5}| {4}$/gm;
     while (emptyChars.test(a)) a = a.replace(emptyChars, ' [?] ');
-    const stacks = a.replace(/\[|]|[ \d]+/gm, '')
+    const stacks = a.replace(/\[|]|[ \d?]+/gm, '')
         .split('\n')
         .reduce((acc, curr) => {
             curr.split('').forEach((x, index) => {
