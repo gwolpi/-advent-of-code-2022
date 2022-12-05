@@ -1,6 +1,6 @@
 import '../extension-methods.ts';
 
-const processInput = (input: string): [{[p: string]: string[]}, number[][]] =>{
+const processInput = (input: string, reverse: boolean): string =>{
   const [a, b] = input.split('\n\n');
   const stacks = a
       .replace(/^ {4}\[|] \[|]? {3,}?\[?|] {4}$/gm, ',')
@@ -15,21 +15,14 @@ const processInput = (input: string): [{[p: string]: string[]}, number[][]] =>{
         return acc;
       }, {} as { [key: string]: string[] });
   const moves = b.matchMap(/move (\d+) from (\d+) to (\d+)/g, (x) => x.slice(1, 4).map(Number));
-  return [stacks, moves];
-}
-
-export const p1 = (input: string): string => {
-  const [stacks, moves] = processInput(input);
   moves.forEach(([amount, from, to]) =>  {
-    stacks[to].push(...stacks[from].splice(-amount).reverse())
+    const x = stacks[from].splice(-amount)
+    if (reverse) x.reverse();
+    stacks[to].push(...x)
   });
   return Object.values(stacks).reduce((acc, curr) => acc + curr.at(-1), '');
 }
 
-export const p2 = (input: string): string => {
-  const [stacks, moves] = processInput(input);
-  moves.forEach(([amount, from, to]) =>  {
-    stacks[to].push(...stacks[from].splice(-amount))
-  });
-  return Object.values(stacks).reduce((acc, curr) => acc + curr.at(-1), '');
-}
+export const p1 = (input: string): string => processInput(input, true);
+
+export const p2 = (input: string): string => processInput(input, false);
