@@ -11,12 +11,12 @@ const inputs = [
 ];
 
 inputs.forEach(({input, expectP1, expectP2}, index) => {
-	Deno.test('it should run the first part of day 06 correctly, test ' + index, () => {
+	Deno.test(`it should run the first part of day 06 correctly, testcase ${index + 1}/${inputs.length}`, () => {
 		const result = p1(input);
 		assertEquals(result, expectP1);
 	});
 
-	Deno.test('it should run the second part of day 06 correctly, test' + index, () => {
+	Deno.test(`it should run the second part of day 06 correctly, testcase ${index + 1}/${inputs.length}`, () => {
 		const result = p2(input);
 		assertEquals(result, expectP2);
 	});
