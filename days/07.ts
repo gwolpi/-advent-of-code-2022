@@ -3,9 +3,9 @@ import '../extension-methods.ts';
 const processInput = (input: string) => {
 	const [,...result] = input.split(/\n\$\s/).map(cmd => cmd.split("\n"));
 	const PARENT = Symbol('..');
-	type File = { size?: number, [PARENT]?: FileDir }
-	type FileDir = { [key: string | symbol]: File | FileDir };
-	const dirs: Array<FileDir> = [{}]
+	type File = { size?: number, [PARENT]?: Dir }
+	type Dir = { [key: string | symbol]: File | Dir };
+	const dirs: Array<Dir> = [{}]
 	let [activeDir] = dirs
 
 	result.forEach(([commandRow, ...output]) => {
@@ -17,7 +17,7 @@ const processInput = (input: string) => {
 					const isDir = dirOrFile === 'dir', size = +dirOrFile;
 					if (isDir) {
 						activeDir[name] = {[PARENT]: activeDir};
-						dirs.push(activeDir[name] as FileDir);
+						dirs.push(activeDir[name] as Dir);
 						return;
 					}
 					activeDir[name] = {size};
@@ -26,14 +26,14 @@ const processInput = (input: string) => {
 			}
 			case 'cd': {
 				const [dir] = args;
-				activeDir = (dir === '..' ? activeDir[PARENT]: activeDir[dir]) as FileDir;
+				activeDir = (dir === PARENT.description ? activeDir[PARENT]: activeDir[dir]) as Dir;
 				break;
 			}
 		}
 	});
 
-	const getDirSize = (dir: FileDir | File): number => Object.values(dir)
-		.map((child: FileDir | File) => PARENT in child ? getDirSize(child) : child.size).sum();
+	const getDirSize = (dir: Dir | File): number => Object.values(dir)
+		.map((child: Dir | File) => PARENT in child ? getDirSize(child) : child.size).sum();
 	return dirs.map(getDirSize);
 }
 
