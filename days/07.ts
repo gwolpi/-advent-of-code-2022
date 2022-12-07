@@ -1,35 +1,24 @@
 import '../extension-methods.ts';
 
 const processInput = (input: string) => {
-	const [,...result] = input.split(/\n\$\s/).map(cmd => cmd.split("\n"));
 	const PARENT = Symbol('..');
 	type File = { size?: number, [PARENT]?: Dir }
 	type Dir = { [key: string | symbol]: File | Dir };
-	const dirs: Array<Dir> = [{}]
-	let [activeDir] = dirs
+	let dirs: Array<Dir> = [{}], [activeDir] = dirs
 
+	const result = input.split(/\n\$\s/).map(cmd => cmd.split("\n"));
 	result.forEach(([commandRow, ...output]) => {
-		const [command, ...args] = commandRow.split(/\s/);
-		switch (command) {
-			case 'ls': {
-				output.forEach((x: string) => {
-					const [dirOrFile, name] = x.split(/\s/);
-					const isDir = dirOrFile === 'dir', size = +dirOrFile;
-					if (isDir) {
-						activeDir[name] = {[PARENT]: activeDir};
-						dirs.push(activeDir[name] as Dir);
-						return;
-					}
-					activeDir[name] = {size};
-				});
-				break;
-			}
-			case 'cd': {
-				const [dir] = args;
-				activeDir = (dir === PARENT.description ? activeDir[PARENT]: activeDir[dir]) as Dir;
-				break;
-			}
-		}
+		const [command, dir] = commandRow.split(/\s/);
+		if (command === 'cd')
+			return activeDir = (dir === PARENT.description ? activeDir[PARENT]: activeDir[dir]) as Dir;
+		output.forEach((x: string) => {
+			if (x === '/') return activeDir = dirs[0];
+			const [dirOrFile, name] = x.split(/\s/);
+			const isFile = dirOrFile !== 'dir', size = +dirOrFile;
+			if (isFile) return activeDir[name] = {size};
+			activeDir[name] = {[PARENT]: activeDir};
+			dirs.push(activeDir[name] as Dir);
+		});
 	});
 
 	const getDirSize = (dir: Dir | File): number => Object.values(dir)
