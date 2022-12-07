@@ -6,13 +6,14 @@ const processInput = (input: string) => {
 	type Dir = { [key: string | symbol]: File | Dir };
 	let dirs: Array<Dir> = [{}], [activeDir] = dirs
 
-	const result = input.split(/\n\$\s/).map(cmd => cmd.split("\n"));
+	const [, ...result] = input.split(/\n\$\s/).map(cmd => cmd.split("\n"));
 	result.forEach(([commandRow, ...output]) => {
 		const [command, dir] = commandRow.split(/\s/);
-		if (command === 'cd')
+		if (command === 'cd') {
+			if (dir === '/') return activeDir = dirs[0];
 			return activeDir = (dir === PARENT.description ? activeDir[PARENT]: activeDir[dir]) as Dir;
+		}
 		output.forEach((x: string) => {
-			if (x === '/') return activeDir = dirs[0];
 			const [dirOrFile, name] = x.split(/\s/);
 			const isFile = dirOrFile !== 'dir', size = +dirOrFile;
 			if (isFile) return activeDir[name] = {size};
