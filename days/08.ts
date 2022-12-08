@@ -9,10 +9,11 @@ export const p1 = (input: string): number => {
 		return acc + row.reduce((acc, cell, x) => {
 			const checkRow = (row: number): boolean => row < cell;
 			const column = rows.map(row => row[x]);
-			return acc + +(row.slice(0, x).every(checkRow)
-				|| row.slice(x + 1).every(checkRow)
-				|| column.slice(0, y).every(checkRow)
-				|| column.slice(y + 1).every(checkRow));
+			const l = row.slice(0, x).every(checkRow);
+			const r = row.slice(x + 1).every(checkRow);
+			const t = column.slice(0, y).every(checkRow);
+			const d = column.slice(y + 1).every(checkRow);
+			return acc + +(l || r || t || d);
 		}, 0);
 	}, 0);
 }
