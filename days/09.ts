@@ -38,10 +38,9 @@ export const p2 = (input: string): number => {
 				const prevTail = tails[i - 1] ?? head;
 				const xDiff = prevTail.x - tail.x, yDiff = prevTail.y - tail.y;
 				const xa = Math.abs(xDiff) > 1, ya = Math.abs(yDiff) > 1;
-				if (xa || ya) {
-					tail.x = xa ? tail.x + Math.sign(xDiff) : prevTail.x
-					tail.y = ya ? tail.y + Math.sign(yDiff) : prevTail.y
-				}
+				if (!(xa || ya)) return;
+				tail.x = xa ? tail.x + Math.sign(xDiff) : prevTail.x
+				tail.y = ya ? tail.y + Math.sign(yDiff) : prevTail.y
 			});
 			const {x: tailX, y: tailY} = tails.at(-1)!;
 			acc.add(`x${tailX}y${tailY}`);
