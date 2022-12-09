@@ -9,8 +9,7 @@ const processInput = (input: string, tails: Coord[]): ProcessedInput => {
 	const head: Coord = {x: 0, y: 0};
 	const dirs: DirFunctions = {U: () => head.y--, D: () => head.y++, L: () => head.x--, R: () => head.x++};
 	const motionMoves = input.matchMap(/([A-Z])\s(\d+)/g, ([, dir, steps]) => ({dir, steps: +steps}));
-	const visited = new Set(['x0y0']);
-	return motionMoves.reduce((acc, {dir, steps}) => {
+	return motionMoves.reduce((visited, {dir, steps}) => {
 		for (let step = 0; step < steps; step++) {
 			dirs[dir]();
 			tails.forEach((tail, index) => {
@@ -22,10 +21,10 @@ const processInput = (input: string, tails: Coord[]): ProcessedInput => {
 				tail.y = yAbs ? tail.y + Math.sign(yDiff) : prevTail.y
 			});
 			const {x, y} = tails.at(-1)!;
-			acc.add(`x${x}y${y}`);
+			visited.add(`x${x}y${y}`);
 		}
-		return acc
-	}, visited).size;
+		return visited
+	}, new Set(['x0y0'])).size;
 };
 
 export const p1 = (input: string): number =>
