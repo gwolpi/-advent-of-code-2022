@@ -1,12 +1,11 @@
 import '../extension-methods.ts';
 
 type MotionMove = { dir: string, steps: number };
-type Coord = { x: number, y: number };
+type Coordinate = { x: number, y: number };
 type DirFunctions = { [key: string]: () => void };
-type ProcessedInput = { head: Coord, dirs: DirFunctions, motionMoves?: MotionMove[] };
 
-const processInput = (input: string, tails: Coord[]): ProcessedInput => {
-	const head: Coord = {x: 0, y: 0};
+const processInput = (input: string, tails: Coordinate[]): number => {
+	const head: Coordinate = {x: 0, y: 0};
 	const dirs: DirFunctions = {U: () => head.y--, D: () => head.y++, L: () => head.x--, R: () => head.x++};
 	const motionMoves = input.matchMap(/([A-Z])\s(\d+)/g,
 		([, dir, steps]): MotionMove => ({dir, steps: +steps}));
