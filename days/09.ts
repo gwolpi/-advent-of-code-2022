@@ -34,8 +34,8 @@ export const p2 = (input: string): number => {
 	return lines.reduce((acc, {dir, steps}) => {
 		for (let step = 0; step < steps; step++) {
 			dirs[dir]();
-			tails.forEach((tail, i) => {
-				const prevTail = tails[i - 1] ?? head;
+			tails.forEach((tail, index) => {
+				const prevTail = tails[index - 1] ?? head;
 				const xDiff = prevTail.x - tail.x, yDiff = prevTail.y - tail.y;
 				const xAbs = Math.abs(xDiff) > 1, yAbs = Math.abs(yDiff) > 1;
 				if (!(xAbs || yAbs)) return;
