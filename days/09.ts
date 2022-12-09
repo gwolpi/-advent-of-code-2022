@@ -11,7 +11,7 @@ const processInput = (input: string) => {
 export const p1 = (input: string): number => {
 	const {lines, head, dirs} = processInput(input);
 	const tail = {x: 0, y: 0};
-	return lines.reduce((acc, {dir, steps}) => {
+	return lines.reduce((visited, {dir, steps}) => {
 		for (let step = 0; step < steps; step++) {
 			dirs[dir]();
 			const x = head.x - tail.x, y = head.y - tail.y;
@@ -23,16 +23,16 @@ export const p1 = (input: string): number => {
 				tail.x = head.x;
 			}
 			const {x: tailX, y: tailY} = tail;
-			acc.add(`x${tailX}y${tailY}`);
+			visited.add(`x${tailX}y${tailY}`);
 		}
-		return acc
+		return visited
 	}, new Set(["x0y0"])).size;
 }
 
 export const p2 = (input: string): number => {
 	const {lines, head, dirs} = processInput(input);
 	const tails = Array.from({length: 9}, () => ({x: 0, y: 0}));
-	return lines.reduce((acc, {dir, steps}) => {
+	return lines.reduce((visited, {dir, steps}) => {
 		for (let step = 0; step < steps; step++) {
 			dirs[dir]();
 			tails.forEach((tail, i) => {
@@ -51,8 +51,8 @@ export const p2 = (input: string): number => {
 				}
 			});
 			const {x: tailX, y: tailY} = tails.at(-1)!;
-			acc.add(`x${tailX}y${tailY}`);
+			visited.add(`x${tailX}y${tailY}`);
 		}
-		return acc
+		return visited
 	}, new Set(["x0y0"])).size;
 }
