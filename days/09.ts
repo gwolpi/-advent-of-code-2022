@@ -21,8 +21,8 @@ export const p1 = (input: string): number => {
 				tail.x = xAbs ? tail.x + Math.sign(xDiff) : head.x
 				tail.y = yAbs ? tail.y + Math.sign(yDiff) : head.y
 			}
-			const {x: tailX, y: tailY} = tail;
-			acc.add(`x${tailX}y${tailY}`);
+			const {x, y} = tail;
+			acc.add(`x${x}y${y}`);
 		}
 		return acc
 	}, visited).size;
@@ -42,8 +42,8 @@ export const p2 = (input: string): number => {
 				tail.x = xAbs ? tail.x + Math.sign(xDiff) : prevTail.x
 				tail.y = yAbs ? tail.y + Math.sign(yDiff) : prevTail.y
 			});
-			const {x: tailX, y: tailY} = tails.at(-1)!;
-			acc.add(`x${tailX}y${tailY}`);
+			const {x, y} = tails.at(-1)!;
+			acc.add(`x${x}y${y}`);
 		}
 		return acc
 	}, visited).size;
