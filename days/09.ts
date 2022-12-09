@@ -3,8 +3,8 @@ import '../extension-methods.ts';
 const processInput = (input: string) => {
 	const lines = input.matchMap(/([A-Z])\s(\d+)/g, ([, dir, steps]) => ({dir, steps: +steps}));
 	const head = {x: 0, y: 0};
-	type VoidFunc = { [key: string]: () => void };
-	const dirs: VoidFunc = {U: () => head.y--, D: () => head.y++, L: () => head.x--, R: () => head.x++};
+	type DirFunctions = { [key: string]: () => void };
+	const dirs: DirFunctions = {U: () => head.y--, D: () => head.y++, L: () => head.x--, R: () => head.x++};
 	return {lines, head, dirs};
 };
 
@@ -22,7 +22,8 @@ export const p1 = (input: string): number => {
 				tail.y += Math.sign(y);
 				tail.x = head.x;
 			}
-			acc.add(`x${tail.x}y${tail.y}`);
+			const {x: tailX, y: tailY} = tail;
+			acc.add(`x${tailX}y${tailY}`);
 		}
 		return acc
 	}, new Set(["x0y0"])).size;
@@ -49,7 +50,8 @@ export const p2 = (input: string): number => {
 					tail.x = prevTail.x;
 				}
 			});
-			acc.add(`x${tails.at(-1)?.x}y${tails.at(-1)?.y}`);
+			const {x: tailX, y: tailY} = tails.at(-1)!;
+			acc.add(`x${tailX}y${tailY}`);
 		}
 		return acc
 	}, new Set(["x0y0"])).size;
