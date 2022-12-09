@@ -14,12 +14,12 @@ export const p1 = (input: string): number => {
 	return lines.reduce((visited, {dir, steps}) => {
 		for (let step = 0; step < steps; step++) {
 			dirs[dir]();
-			const x = head.x - tail.x, y = head.y - tail.y;
-			if (Math.abs(x) > 1) {
-				tail.x += Math.sign(x);
+			const xDiff = head.x - tail.x, yDiff = head.y - tail.y;
+			if (Math.abs(xDiff) > 1) {
+				tail.x += Math.sign(xDiff);
 				tail.y = head.y;
-			} else if (Math.abs(y) > 1) {
-				tail.y += Math.sign(y);
+			} else if (Math.abs(yDiff) > 1) {
+				tail.y += Math.sign(yDiff);
 				tail.x = head.x;
 			}
 			const {x: tailX, y: tailY} = tail;
@@ -37,8 +37,8 @@ export const p2 = (input: string): number => {
 			dirs[dir]();
 			tails.forEach((tail, i) => {
 				const prevTail = tails[i - 1] ?? head;
-				const x = prevTail.x - tail.x, y = prevTail.y - tail.y;
-				const xa = Math.abs(x) > 1, ya = Math.abs(y) > 1, xs = Math.sign(x), ys = Math.sign(y);
+				const xDiff = prevTail.x - tail.x, yDiff = prevTail.y - tail.y;
+				const xa = Math.abs(xDiff) > 1, ya = Math.abs(yDiff) > 1, xs = Math.sign(xDiff), ys = Math.sign(yDiff);
 				if (xa && ya) {
 					tail.x += xs;
 					tail.y += ys;
