@@ -16,10 +16,10 @@ export const p1 = (input: string): number => {
 		for (let step = 0; step < steps; step++) {
 			dirs[dir]();
 			const xDiff = head.x - tail.x, yDiff = head.y - tail.y;
-			const xa = Math.abs(xDiff) > 1, ya = Math.abs(yDiff) > 1;
-			if (xa || ya) {
-				tail.x = xa ? tail.x + Math.sign(xDiff) : head.x
-				tail.y = ya ? tail.y + Math.sign(yDiff) : head.y
+			const xAbs = Math.abs(xDiff) > 1, yAbs = Math.abs(yDiff) > 1;
+			if (xAbs || yAbs) {
+				tail.x = xAbs ? tail.x + Math.sign(xDiff) : head.x
+				tail.y = yAbs ? tail.y + Math.sign(yDiff) : head.y
 			}
 			const {x: tailX, y: tailY} = tail;
 			acc.add(`x${tailX}y${tailY}`);
@@ -37,10 +37,10 @@ export const p2 = (input: string): number => {
 			tails.forEach((tail, i) => {
 				const prevTail = tails[i - 1] ?? head;
 				const xDiff = prevTail.x - tail.x, yDiff = prevTail.y - tail.y;
-				const xa = Math.abs(xDiff) > 1, ya = Math.abs(yDiff) > 1;
-				if (!(xa || ya)) return;
-				tail.x = xa ? tail.x + Math.sign(xDiff) : prevTail.x
-				tail.y = ya ? tail.y + Math.sign(yDiff) : prevTail.y
+				const xAbs = Math.abs(xDiff) > 1, yAbs = Math.abs(yDiff) > 1;
+				if (!(xAbs || yAbs)) return;
+				tail.x = xAbs ? tail.x + Math.sign(xDiff) : prevTail.x
+				tail.y = yAbs ? tail.y + Math.sign(yDiff) : prevTail.y
 			});
 			const {x: tailX, y: tailY} = tails.at(-1)!;
 			acc.add(`x${tailX}y${tailY}`);
