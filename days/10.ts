@@ -25,7 +25,6 @@ export const p2 = (input: string): string => {
     // Position reached the end of a row, add a newline character
     if (!pos) acc += '\n';
     // When the pixel is -1, 0 or 1, lit the pixel else leave it dark
-    acc += (Math.abs(register - pos) <= 1) ? '#' : ' ';
-    return acc;
+    return acc + (Math.abs(register - pos) <= 1) ? '#' : ' ';
   }, '').trimEnd();
 }
