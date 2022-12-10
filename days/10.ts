@@ -11,7 +11,7 @@ export const p1 = (input: string): number => {
     // Add the signal strength to the accumulator if the cycle number is 20, 60, 100, 140, 180 or 220
     if (cycleNumber % 40 === 20) acc += register * cycleNumber;
     // if value is a valid number, it is an addx operation and should be added to the register
-    if (!isNaN(value)) register += value;
+    if (value) register += value;
     return acc;
   }, 0);
 }
@@ -20,7 +20,7 @@ export const p2 = (input: string): string => {
   let register = 1;
   return processInput(input).reduce((acc, value, cycleNumber) => {
     // if value is a valid number, it is an addx operation and should be added to the register
-    if (!isNaN(value)) register += value;
+    if (value) register += value;
     const pos = cycleNumber % 40;
     // Position reached the end of a row, add a newline character
     if (!pos) acc += '\n';
