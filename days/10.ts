@@ -6,27 +6,24 @@ const processInput = (input: string) => `noop\n${input}`
     ([, operationName, value]) => ({ changeRegister: operationName === 'addx', value: +value }));
 
 export const p1 = (input: string): number => {
-  const cycles = processInput(input);
   let register = 1;
+  const cycles = processInput(input);
   return cycles.reduce((acc, { changeRegister, value }, index) => {
     const cycleNumber = index + 1;
     if (changeRegister) register += value;
-    if (cycleNumber % 40 === 20) {
-      const signalStrength = register * cycleNumber;
-      acc += signalStrength;
-    }
+    if (cycleNumber % 40 === 20) acc += register * cycleNumber;
     return acc;
   }, 0);
 }
 
 export const p2 = (input: string): string => {
-  const cycles = processInput(input);
   let register = 1;
-  return '\n' + cycles.reduce((acc, { changeRegister, value }, cycleNumber) => {
+  const cycles = processInput(input);
+  return cycles.reduce((acc, { changeRegister, value }, cycleNumber) => {
     if (changeRegister) register += value;
     const pos = cycleNumber % 40;
+    if (!pos) acc += '\n';
     acc += (Math.abs(register - pos) <= 1) ? '#' : ' ';
-    if (pos === 39) acc += '\n';
     return acc;
   }, '').trimEnd();
 }
