@@ -7,8 +7,7 @@ const processInput = (input: string) => `noop\n${input}`
 
 export const p1 = (input: string): number => {
   let register = 1;
-  const cycles = processInput(input);
-  return cycles.reduce((acc, value, cycleNumber) => {
+  return processInput(input).reduce((acc, value, cycleNumber) => {
     // Add the signal strength to the accumulator if the cycle number is 20, 60, 100, 140, 180 or 220
     if (cycleNumber % 40 === 20) acc += register * cycleNumber;
     // if value is a valid number, it is an addx operation and should be added to the register
@@ -19,8 +18,7 @@ export const p1 = (input: string): number => {
 
 export const p2 = (input: string): string => {
   let register = 1;
-  const cycles = processInput(input);
-  return cycles.reduce((acc, value, cycleNumber) => {
+  return processInput(input).reduce((acc, value, cycleNumber) => {
     // if value is a valid number, it is an addx operation and should be added to the register
     if (!isNaN(value)) register += value;
     const pos = cycleNumber % 40;
