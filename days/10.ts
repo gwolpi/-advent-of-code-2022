@@ -16,9 +16,8 @@ export const p1 = (input: string): number => {
 export const p2 = (input: string): string => {
   let register = 1;
   return processInput(input).reduce((acc, value, cycleNumber) => {
-    if (value) register += value;
     const pos = cycleNumber % 40;
-    if (!pos) acc += '\n';
-    return acc + ((Math.abs(register - pos) <= 1) ? '#' : '.');
+    if (value) register += value;
+    return `${acc}${pos ? '' : '\n'}${(Math.abs(register - pos) <= 1) ? '#' : '.'}`;
   }, '');
 }
