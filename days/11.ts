@@ -44,7 +44,7 @@ export const p1 = (input: string): number => {
 
 export const p2 = (input: string): number => {
 	const monkeysMap = processInput(input), monkeysArray = Object.values(monkeysMap);
-	const safeDivisible = monkeysArray.map(({testDivision}) => testDivision).reduce((a, b) => a * b);
+	const safeDivision = monkeysArray.map(({testDivision}) => testDivision).reduce((a, b) => a * b);
 	for (let i = 0; i < 10000; i++)
 		for (const monkey of monkeysArray) {
 			const {items, operator, operationValue, testDivision, conditionTrue, conditionFalse} = monkey;
@@ -53,7 +53,7 @@ export const p2 = (input: string): number => {
 					'*': () => itemNumber * (operationValue || itemNumber),
 					'+': () => itemNumber + (operationValue || itemNumber),
 				}
-				const worry = operators[operator]() % safeDivisible;
+				const worry = operators[operator]() % safeDivision;
 				const target = !(worry % testDivision) ? conditionTrue : conditionFalse;
 				monkeysMap[target].items.push(worry);
 				monkey.inspectionCount++;
