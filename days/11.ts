@@ -2,7 +2,7 @@ import '../extension-methods.ts';
 
 type Monkey = { id: number, items: number[], operator: string, operationValue: number, testDivision: number, conditionTrue: number, conditionFalse: number, inspectionCount: number };
 
-const processInput = (input: string): { [key: number]: Monkey } => {
+const processInput = (input: string): Monkey[] => {
 	const regex = /^.+(\d+):\n.+:\s([\d, ]+)\n.+([*+])\s(\d+|old)\n.+y\s(\d+)\n.+y\s(\d+)\n.+y\s(\d+)$/gm;
 	return input.matchMap(regex, ([, id, items, operator, operationVal, testDivision, conditionTrue, conditionFalse]) => ({
 		id: +id,
@@ -13,57 +13,51 @@ const processInput = (input: string): { [key: number]: Monkey } => {
 		conditionTrue: +conditionTrue,
 		conditionFalse: +conditionFalse,
 		inspectionCount: 0,
-	} as Monkey)).reduce((acc, monkey) => {
-		acc[monkey.id] = monkey;
-		return acc;
-	}, {} as { [key: number]: Monkey });
+	} as Monkey));
+}
+
+const operators: { [key: string]: (itemNumber: number, operationValue: number) => number } = {
+	'*': (itemNumber: number, operationValue: number) => itemNumber * (operationValue || itemNumber),
+	'+': (itemNumber: number, operationValue: number) => itemNumber + (operationValue || itemNumber),
 }
 
 export const p1 = (input: string): number => {
-	const monkeysMap = processInput(input), monkeysArray = Object.values(monkeysMap);
+	const monkeys = processInput(input);
 	for (let i = 0; i < 20; i++)
-		for (const monkey of monkeysArray) {
+		for (const monkey of monkeys) {
 			const {items, operator, operationValue, testDivision, conditionTrue, conditionFalse} = monkey;
 			items.forEach((itemNumber: number) => {
-				const operators: { [key: string]: () => number } = {
-					'*': () => itemNumber * (operationValue || itemNumber),
-					'+': () => itemNumber + (operationValue || itemNumber),
-				}
-				const worry = Math.floor(operators[operator]() / 3);
+				const worry = Math.floor(operators[operator](itemNumber, operationValue) / 3);
 				const target = !(worry % testDivision) ? conditionTrue : conditionFalse;
-				monkeysMap[target].items.push(worry);
+				monkeys.find(({id}) => id === target)!.items.push(worry);
 				monkey.inspectionCount++;
 			});
 			// Prevent infinite loop
-			// Emptying an array without breaking its references by making it's length = 0;
+			// Emptying an array without breaking its references by making its length = 0;
 			items.length = 0;
 		}
 
-	const result = monkeysArray.map(x => x.inspectionCount).sortNums();
+	const result = monkeys.map(x => x.inspectionCount).sortNums();
 	return result.at(-1)! * result.at(-2)!;
 }
 
 export const p2 = (input: string): number => {
-	const monkeysMap = processInput(input), monkeysArray = Object.values(monkeysMap);
-	const safeDivision = monkeysArray.map(({testDivision}) => testDivision).reduce((a, b) => a * b);
+	const monkeys = processInput(input);
+	const safeDivision = monkeys.map(({testDivision}) => testDivision).reduce((a, b) => a * b);
 	for (let i = 0; i < 10000; i++)
-		for (const monkey of monkeysArray) {
+		for (const monkey of monkeys) {
 			const {items, operator, operationValue, testDivision, conditionTrue, conditionFalse} = monkey;
 			items.forEach((itemNumber: number) => {
-				const operators: { [key: string]: () => number } = {
-					'*': () => itemNumber * (operationValue || itemNumber),
-					'+': () => itemNumber + (operationValue || itemNumber),
-				}
-				const worry = operators[operator]() % safeDivision;
+				const worry = operators[operator](itemNumber, operationValue) % safeDivision;
 				const target = !(worry % testDivision) ? conditionTrue : conditionFalse;
-				monkeysMap[target].items.push(worry);
+				monkeys.find(({id}) => id === target)!.items.push(worry);
 				monkey.inspectionCount++;
 			});
 			// Prevent infinite loop
-			// Emptying an array without breaking its references by making it's length = 0;
+			// Emptying an array without breaking its references by making its length = 0;
 			items.length = 0;
 		}
 
-	const result = monkeysArray.map(({inspectionCount}) => inspectionCount).sortNums();
+	const result = monkeys.map(({inspectionCount}) => inspectionCount).sortNums();
 	return result.at(-1)! * result.at(-2)!;
 }
