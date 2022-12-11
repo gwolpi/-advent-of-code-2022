@@ -26,7 +26,7 @@ export const p1 = (input: string): number => {
 			const {items, operator, operationValue, testDivision, conditionTrue, conditionFalse} = monkey;
 			items.forEach((itemNumber: number) => {
 				const worry = Math.floor(operators[operator](itemNumber, operationValue) / 3);
-				const target = !(worry % testDivision) ? conditionTrue : conditionFalse;
+				const target = worry % testDivision ? conditionFalse : conditionTrue;
 				monkeys[target].items.push(worry);
 				monkey.inspectionCount++;
 			});
@@ -44,7 +44,7 @@ export const p2 = (input: string): number => {
 			const {items, operator, operationValue, testDivision, conditionTrue, conditionFalse} = monkey;
 			items.forEach((itemNumber: number) => {
 				const worry = operators[operator](itemNumber, operationValue) % safeDivision;
-				const target = !(worry % testDivision) ? conditionTrue : conditionFalse;
+				const target = worry % testDivision ? conditionFalse : conditionTrue;
 				monkeys[target].items.push(worry);
 				monkey.inspectionCount++;
 			});
