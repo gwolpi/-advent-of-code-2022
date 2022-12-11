@@ -2,19 +2,18 @@ import '../extension-methods.ts';
 
 type Monkey = { id: number, items: number[], operator: string, operationValue: number, testDivision: number, conditionTrue: number, conditionFalse: number, inspectionCount: number };
 
-const processInput = (input: string): Monkey[] => {
-	const regex = /^.+(\d+):\n.+:\s([\d, ]+)\n.+([*+])\s(\d+|old)\n.+y\s(\d+)\n.+y\s(\d+)\n.+y\s(\d+)$/gm;
-	return input.matchMap(regex, ([, id, items, operator, operationVal, testDivision, conditionTrue, conditionFalse]) => ({
-		id: +id,
-		items: items.split(', ').map(x => +x),
-		operator,
-		operationValue: +operationVal,
-		testDivision: +testDivision,
-		conditionTrue: +conditionTrue,
-		conditionFalse: +conditionFalse,
-		inspectionCount: 0,
-	} as Monkey));
-}
+const processInput = (input: string): Monkey[] =>
+	input.matchMap(/^.+(\d+):\n.+:\s([\d, ]+)\n.+([*+])\s(\d+|old)\n.+y\s(\d+)\n.+y\s(\d+)\n.+y\s(\d+)$/gm,
+		([, id, items, operator, operationVal, testDivision, conditionTrue, conditionFalse]) => ({
+			id: +id,
+			items: items.split(', ').map(x => +x),
+			operator,
+			operationValue: +operationVal,
+			testDivision: +testDivision,
+			conditionTrue: +conditionTrue,
+			conditionFalse: +conditionFalse,
+			inspectionCount: 0,
+		} as Monkey));
 
 const operators: { [key: string]: (itemNumber: number, operationValue: number) => number } = {
 	'*': (itemNumber: number, operationValue: number) => itemNumber * (operationValue || itemNumber),
