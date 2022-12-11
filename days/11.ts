@@ -1,6 +1,6 @@
 import '../extension-methods.ts';
 
-type Monkey = { id: number, items: number[], operator: string, operationValue: string | number, testDivision: number, conditionTrue: number, conditionFalse: number, inspectionCount: number };
+type Monkey = { id: number, items: number[], operator: string, operationValue: number, testDivision: number, conditionTrue: number, conditionFalse: number, inspectionCount: number };
 
 const processInput = (input: string): { [key: number]: Monkey } => {
 	const regex = /Monkey (\d+):\n {2}Starting items: ([\d, ]+)\n {2}Operation: new = old ([*+]) (\d+|\w+)\n {2}Test: divisible by (\d+)\n {4}If true: throw to monkey (\d+)\n {4}If false: throw to monkey (\d)/gm;
@@ -8,7 +8,7 @@ const processInput = (input: string): { [key: number]: Monkey } => {
 		id: +id,
 		items: items.split(', ').map(x => +x),
 		operator,
-		operationValue: isNaN(+operationVal) ? operationVal : +operationVal,
+		operationValue: +operationVal || 0,
 		testDivision: +testDivision,
 		conditionTrue: +conditionTrue,
 		conditionFalse: +conditionFalse,
@@ -25,10 +25,9 @@ export const p1 = (input: string): number => {
 		for (const monkey of monkeysArray) {
 			const {items, operator, operationValue, testDivision, conditionTrue, conditionFalse} = monkey;
 			items.forEach((itemNumber: number) => {
-				const value = typeof operationValue === 'number' ? operationValue : itemNumber
 				const operators: { [key: string]: () => number } = {
-					'*': () => itemNumber * value,
-					'+': () => itemNumber + value,
+					'*': () => itemNumber * (operationValue || itemNumber),
+					'+': () => itemNumber + (operationValue || itemNumber),
 				}
 				const worry = Math.floor(operators[operator]() / 3);
 				const target = !(worry % testDivision) ? conditionTrue : conditionFalse;
@@ -51,10 +50,9 @@ export const p2 = (input: string): number => {
 		for (const monkey of monkeysArray) {
 			const {items, operator, operationValue, testDivision, conditionTrue, conditionFalse} = monkey;
 			items.forEach((itemNumber: number) => {
-				const value = typeof operationValue === 'number' ? operationValue : itemNumber
 				const operators: { [key: string]: () => number } = {
-					'*': () => (itemNumber * value),
-					'+': () => (itemNumber + value),
+					'*': () => itemNumber * (operationValue || itemNumber),
+					'+': () => itemNumber + (operationValue || itemNumber),
 				}
 				const worry = operators[operator]() % safeDivisible;
 				const target = !(worry % testDivision) ? conditionTrue : conditionFalse;
