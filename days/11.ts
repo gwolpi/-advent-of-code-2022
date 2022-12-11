@@ -38,7 +38,7 @@ export const p1 = (input: string): number => {
 
 export const p2 = (input: string): number => {
 	const monkeys = processInput(input);
-	const safeDivision = monkeys.map(({testDivision}) => testDivision).reduce((a, b) => a * b);
+	const safeDivision = monkeys.reduce((a, {testDivision: b}) => a * b, 1);
 	for (let i = 0; i < 10000; i++)
 		monkeys.forEach((monkey: Monkey) => {
 			const {items, operator, operationValue, testDivision, conditionTrue, conditionFalse} = monkey;
