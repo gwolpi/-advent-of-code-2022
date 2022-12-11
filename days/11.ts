@@ -21,7 +21,7 @@ const processInput = (input: string): { [key: number]: Monkey } => {
 
 export const p1 = (input: string): number => {
 	const monkeysMap = processInput(input), monkeysArray = Object.values(monkeysMap);
-	for (let i = 0; i < 20; i++) {
+	for (let i = 0; i < 20; i++)
 		for (const monkey of monkeysArray) {
 			const {items, operator, operationValue, testDivision, conditionTrue, conditionFalse} = monkey;
 			items.forEach((itemNumber: number) => {
@@ -37,7 +37,6 @@ export const p1 = (input: string): number => {
 			// Prevent infinite loop
 			items.length = 0;
 		}
-	}
 
 	const result = monkeysArray.map(x => x.inspectionCount).sortNums();
 	return result.at(-1)! * result.at(-2)!;
@@ -46,7 +45,7 @@ export const p1 = (input: string): number => {
 export const p2 = (input: string): number => {
 	const monkeysMap = processInput(input), monkeysArray = Object.values(monkeysMap);
 	const safeDivisible = monkeysArray.map(({testDivision}) => testDivision).reduce((a, b) => a * b);
-	for (let i = 0; i < 10000; i++) {
+	for (let i = 0; i < 10000; i++)
 		for (const monkey of monkeysArray) {
 			const {items, operator, operationValue, testDivision, conditionTrue, conditionFalse} = monkey;
 			items.forEach((itemNumber: number) => {
@@ -62,7 +61,6 @@ export const p2 = (input: string): number => {
 			// Prevent infinite loop
 			items.length = 0;
 		}
-	}
 
 	const result = monkeysArray.map(({inspectionCount}) => inspectionCount).sortNums();
 	return result.at(-1)! * result.at(-2)!;
