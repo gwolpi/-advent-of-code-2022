@@ -24,14 +24,14 @@ export const p1 = (input: string): number => {
 	for (let i = 0; i < 20; i++) {
 		for (const monkey of monkeysArray) {
 			const {items, operator, operationValue, testDivision, conditionTrue, conditionFalse} = monkey;
-			items.forEach((worry) => {
-				const value = typeof operationValue === 'number' ? operationValue : worry
+			items.forEach((itemNumber: number) => {
+				const value = typeof operationValue === 'number' ? operationValue : itemNumber
 				const operators: { [key: string]: () => number } = {
-					'*': () => worry * value,
-					'+': () => worry + value,
+					'*': () => itemNumber * value,
+					'+': () => itemNumber + value,
 				}
-				worry = Math.floor(operators[operator]() / 3);
-				const target = worry % testDivision === 0 ? conditionTrue : conditionFalse;
+				const worry = Math.floor(operators[operator]() / 3);
+				const target = !(worry % testDivision) ? conditionTrue : conditionFalse;
 				monkeysMap[target].items.push(worry);
 				monkey.inspectionCount++;
 			});
@@ -50,14 +50,14 @@ export const p2 = (input: string): number => {
 	for (let i = 0; i < 10000; i++) {
 		for (const monkey of monkeysArray) {
 			const {items, operator, operationValue, testDivision, conditionTrue, conditionFalse} = monkey;
-			items.forEach((worry: number) => {
-				const value = typeof operationValue === 'number' ? operationValue : worry
+			items.forEach((itemNumber: number) => {
+				const value = typeof operationValue === 'number' ? operationValue : itemNumber
 				const operators: { [key: string]: () => number } = {
-					'*': () => (worry * value),
-					'+': () => (worry + value),
+					'*': () => (itemNumber * value),
+					'+': () => (itemNumber + value),
 				}
-				worry = operators[operator]() % safeDivisible;
-				const target = worry % testDivision === 0 ? conditionTrue : conditionFalse;
+				const worry = operators[operator]() % safeDivisible;
+				const target = !(worry % testDivision) ? conditionTrue : conditionFalse;
 				monkeysMap[target].items.push(worry);
 				monkey.inspectionCount++;
 			});
