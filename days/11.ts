@@ -8,7 +8,7 @@ const processInput = (input: string): { [key: number]: Monkey } => {
 		id: +id,
 		items: items.split(', ').map(x => +x),
 		operator,
-		operationValue: +operationVal || 0,
+		operationValue: +operationVal,
 		testDivision: +testDivision,
 		conditionTrue: +conditionTrue,
 		conditionFalse: +conditionFalse,
