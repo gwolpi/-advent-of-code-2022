@@ -35,6 +35,7 @@ export const p1 = (input: string): number => {
 				monkey.inspectionCount++;
 			});
 			// Prevent infinite loop
+			// Emptying an array without breaking its references by making it's length = 0;
 			items.length = 0;
 		}
 
@@ -59,6 +60,7 @@ export const p2 = (input: string): number => {
 				monkey.inspectionCount++;
 			});
 			// Prevent infinite loop
+			// Emptying an array without breaking its references by making it's length = 0;
 			items.length = 0;
 		}
 
