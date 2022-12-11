@@ -3,7 +3,7 @@ import '../extension-methods.ts';
 type Monkey = { id: number, items: number[], operator: string, operationValue: number, testDivision: number, conditionTrue: number, conditionFalse: number, inspectionCount: number };
 
 const processInput = (input: string): { [key: number]: Monkey } => {
-	const regex = /Monkey (\d+):\n {2}Starting items: ([\d, ]+)\n {2}Operation: new = old ([*+]) (\d+|\w+)\n {2}Test: divisible by (\d+)\n {4}If true: throw to monkey (\d+)\n {4}If false: throw to monkey (\d)/gm;
+	const regex = /.+(\d+):\s{3}.+: ([\d, ]+)\s{3}.+old ([*+]) (\d+|\w+)\s{3}.+by (\d+)\s{5}.+monkey (\d+)\s{5}.+monkey (\d)/g;
 	return input.matchMap(regex, ([, id, items, operator, operationVal, testDivision, conditionTrue, conditionFalse]) => ({
 		id: +id,
 		items: items.split(', ').map(x => +x),
