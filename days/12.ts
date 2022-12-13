@@ -13,8 +13,7 @@ const processInput = (input: string) => {
 	let start: Cell | undefined, end: Cell;
 	const grid = input.splitRows().reduce((rows, row, y) => {
 		rows[y] = row.split('').reduce((cells, char, x) => {
-			let z = char.charCodeAt(0);
-			const cell: Cell = {x, y, z}
+			const cell: Cell = {x, y, z: char.charCodeAt(0)}
 			if (char === 'S') start = transformCell(cell, 'a');
 			if (char === 'E') end = transformCell(cell, 'z');
 			cells[x] = cell;
