@@ -30,12 +30,9 @@ const processInput = (input: string) => {
       if (currentCell?.steps !== undefined) return toVisitNext;
       currentCell.steps = steps;
       const { x, y, z } = currentCell!;
-      toVisitNext.push(...[
-        grid[y]?.[x - 1], // left
-        grid[y]?.[x + 1], // right
-        grid[y - 1]?.[x], // up
-        grid[y + 1]?.[x]  // down
-      ].filter((neighbor) => neighbor && z - neighbor.z <= 1));
+      const left = grid[x - 1]?.[y], right = grid[x + 1]?.[y], up = grid[x]?.[y - 1], down = grid[x]?.[y + 1];
+      const eligibleDirs = [left, right, up, down].filter((neighbor) => neighbor && z - neighbor.z <= 1);
+      toVisitNext.push(...eligibleDirs);
       return toVisitNext;
     }, [] as Cell[]);
     steps++;
