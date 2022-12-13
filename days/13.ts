@@ -17,13 +17,12 @@ const compareOrder = (left: Signal, right: Signal): boolean | null => {
 	return null;
 }
 
-export const p1 = (input: string): number => {
-	return input.splitRows(2)
+export const p1 = (input: string): number =>
+	input.splitRows(2)
 		.map(line => line.splitRows().map((row) => JSON.parse(row)))
 		.reduce((acc, [left, right], index) =>
 				acc + (compareOrder(left, right) ? index + 1 : 0)
 			, 0);
-}
 
 export const p2 = (input: string): number => {
 	const dividerPacketOne = [[2]], dividerPacketTwo = [[6]];
