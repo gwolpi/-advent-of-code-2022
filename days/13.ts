@@ -3,9 +3,8 @@ import '../extension-methods.ts';
 type Signal = number | Array<Signal>;
 
 const compareOrder = (left: Signal, right: Signal): boolean | null => {
-	if (typeof left === "number" && typeof right === "number") {
-		return left < right ? true : left > right ? false : null;
-	}
+	if (typeof left === "number" && typeof right === "number")
+		return {[-1]: true, [0]: null, [1]: false}[Math.sign(left - right)] ?? null;
 	const leftArray = Array.isArray(left) ? left : [left];
 	const rightArray = Array.isArray(right) ? right : [right];
 	for (let i = 0; i <= Math.min(leftArray.length, rightArray.length); i++) {
@@ -13,8 +12,7 @@ const compareOrder = (left: Signal, right: Signal): boolean | null => {
 		if (i === leftArray.length) return true;
 		if (i === rightArray.length) return false;
 		const result = compareOrder(leftArray[i], rightArray[i])
-		if (result === null) continue;
-		return result;
+		if (result !== null) return result;
 	}
 	return null;
 }
@@ -32,7 +30,7 @@ export const p2 = (input: string): number => {
 	const signals = input.trim()
 		.split(/\n+/).map((row) => JSON.parse(row) as Signal)
 		.concat([dividerPacketOne, dividerPacketTwo])
-		.sort((right, left) => +!compareOrder(right, left) - 1)
+		.sort((right, left) => +!compareOrder(right, left) - 1);
 	const findPacket = (packet: number[][]) => signals.findIndex((next) => next === packet) + 1;
 	return findPacket(dividerPacketOne) * findPacket(dividerPacketTwo);
 }
