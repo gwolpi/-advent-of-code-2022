@@ -1,6 +1,8 @@
 import '../extension-methods.ts';
 
-const compareOrder = (left: number, right: number): boolean | null => {
+type Signal = number | Array<Signal>;
+
+const compareOrder = (left: Signal, right: Signal): boolean | null => {
 	if (typeof left === "number" && typeof right === "number") {
 		return left < right ? true : left > right ? false : null;
 	}
@@ -27,15 +29,10 @@ export const p1 = (input: string): number => {
 
 export const p2 = (input: string): number => {
 	const dividerPacketOne = [[2]], dividerPacketTwo = [[6]];
-	const signal = input.trim()
-		.split(/\n+/).map((row) => JSON.parse(row))
-		.concat([dividerPacketOne, dividerPacketTwo]);
-	for (let i = 1; i < signal.length; i++) {
-		const left = signal[i - 1], right = signal[i];
-		if (compareOrder(left, right)) continue;
-		[signal[i - 1], signal[i]] = [right, left];
-		i = 0;
-	}
-	const findPacket = (packet: number[][]) => signal.findIndex((next) => next === packet) + 1;
+	const signals = input.trim()
+		.split(/\n+/).map((row) => JSON.parse(row) as Signal)
+		.concat([dividerPacketOne, dividerPacketTwo])
+		.sort((right, left) => +!compareOrder(right, left) - 1)
+	const findPacket = (packet: number[][]) => signals.findIndex((next) => next === packet) + 1;
 	return findPacket(dividerPacketOne) * findPacket(dividerPacketTwo);
 }
