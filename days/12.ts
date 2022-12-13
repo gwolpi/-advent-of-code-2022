@@ -12,8 +12,8 @@ const transformCell = (cell: Cell, char: string): Cell => {
 
 const processInput = (input: string) => {
   let start: Cell | undefined, end: Cell;
-  const grid = input.splitRows().reduce((grid, row, y) => {
-    grid[y] = row.split('').reduce((cells, char, x) => {
+  const grid = input.splitRows().reduce((rows, row, y) => {
+    rows[y] = row.split('').reduce((cells, char, x) => {
       let z = char.charCodeAt(0);
       const cell: Cell = {char, x, y, z}
       if (char === 'S') start = transformCell(cell, 'a');
@@ -21,7 +21,7 @@ const processInput = (input: string) => {
       cells[x] = cell;
       return cells;
     }, {} as Row);
-    return grid;
+    return rows;
   }, {} as Grid);
 
   let toVisit = [end!], steps = 0;
