@@ -35,11 +35,10 @@ export const p2 = (input: string, searchSpace = 4000000): number | undefined => 
 				acc.push({min, max});
 			}
 			return acc;
-		}, [] as Range[]);
+		}, [] as Range[]).sort((a, b) => a.min - b.min || a.max - b.max);
 
-		const sortedRanges = ranges.sort((a, b) => a.min - b.min || a.max - b.max);
-		let next = sortedRanges.shift()!;
-		const range = sortedRanges.find((range) => {
+		let next = ranges.shift()!;
+		const range = ranges.find((range) => {
 			if (next.max < range.min - 1) return true;
 			next = {min: Math.min(next.min, range.min), max: Math.max(next.max, range.max)};
 			return false;
