@@ -23,18 +23,19 @@ export const p1 = (input: string, y = 2000000): number => {
 
 export const p2 = (input: string, searchSpace = 4000000): number | undefined => {
 	const processed = processInput(input);
+	type Range = { min: number, max: number };
 
 	for (let y = 0; y <= searchSpace; y++) {
-		const ranges: { min: number, max: number }[] = [];
-		processed.forEach(({sensor, beacon}) => {
+		const ranges = processed.reduce((acc, {sensor, beacon}) => {
 			const dist = Math.abs(sensor.x - beacon.x) + Math.abs(sensor.y - beacon.y);
-			if (y < sensor.y - dist || y > sensor.y + dist) return;
-			const yDiff = Math.abs(sensor.y - y);
-			ranges.push({
-				min: Math.max(sensor.x - dist + yDiff, 0),
-				max: Math.min(sensor.x + dist - yDiff, searchSpace)
-			});
-		});
+			if (y >= sensor.y - dist && y <= sensor.y + dist) {
+				const yDiff = Math.abs(sensor.y - y);
+				const min = Math.max(sensor.x - dist + yDiff, 0);
+				const max = Math.min(sensor.x + dist - yDiff, searchSpace);
+				acc.push({min, max});
+			}
+			return acc;
+		}, [] as Range[]);
 
 		const sortedRanges = ranges.sort((a, b) => a.min - b.min || a.max - b.max);
 		let next = sortedRanges.shift()!;
