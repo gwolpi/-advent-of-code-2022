@@ -6,20 +6,6 @@ type Cell = { x: number, y: number, material: Material };
 type Row = { [y: string]: Cell }
 type Cave = { [x: string]: Row };
 
-const printCave = (cave: Cave) => {
-	const caveY = Object.keys(cave).map(Number).sort((a, b) => a - b);
-	const caveX = Object.values(cave).flatMap((row) => Object.keys(row).map(Number)).sort((a, b) => a - b);
-	const minX = caveX.min(), maxX = caveX.max(), minY = caveY.min(), maxY = caveY.max();
-
-	for (let y = minY; y <= maxY; y++) {
-		let line = '';
-		for (let x = minX; x <= maxX; x++) {
-			line += cave[y]?.[x]?.material ?? '';
-		}
-		console.log(line);
-	}
-}
-
 const processInput = (input: string, caveFloorMaterial: Material) => {
 	const caveInstructions = input.splitRows()
 		.map((line) => line.split(' -> ')
@@ -73,10 +59,7 @@ export const p1 = (input: string): number => {
 		while (fallingSand) {
 			const cellBelow = getCellBelow(fallingSand);
 			if (!cellBelow) fallingSand.material = Material.Sand;
-			if (cellBelow?.material === Material.Boundary) {
-				printCave(cave);
-				return i;
-			}
+			if (cellBelow?.material === Material.Boundary) return i;
 			fallingSand = cellBelow;
 		}
 	}
@@ -105,5 +88,3 @@ export const p2 = (input: string): number => {
 		}
 	}
 }
-
-//27426
