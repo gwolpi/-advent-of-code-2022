@@ -46,6 +46,10 @@ declare global {
 		 */
 		count(predicate?: (item: T) => boolean): number;
 	}
+
+	export interface Map<K, V> {
+		count(predicate?: (item: V) => boolean): number;
+	}
 }
 
 String.prototype.splitRows = function (length = 1) {
@@ -79,6 +83,11 @@ Array.prototype.sortNums = function () {
 Array.prototype.count = function <T>(predicate?: (item: T) => boolean) {
 	if (!predicate) return this.length;
 	return this.filter(predicate).length;
+}
+
+Map.prototype.count = function <K, V>(predicate?: (item: V) => boolean) {
+	if (!predicate) return this.size;
+	return [...this.values()].filter(predicate).length;
 }
 
 export {};

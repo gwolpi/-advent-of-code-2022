@@ -7,18 +7,15 @@ const processInput = (input: string) => {
 	}));
 }
 export const p1 = (input: string, y = 2000000): number => {
-	const covered = new Set(), beacons = new Set();
-	processInput(input).forEach(({sensor, beacon}) => {
+	const marked = processInput(input).reduce((acc, {sensor, beacon}) => {
 		const dist = Math.abs(sensor.x - beacon.x) + Math.abs(sensor.y - beacon.y);
 		const yDiff = Math.abs(sensor.y - y);
 		const minX = sensor.x - dist + yDiff;
 		const maxX = sensor.x + dist - yDiff;
-		for (let x = minX; x <= maxX; x++) {
-			covered.add(`x${x}y${y}`);
-			if (x === beacon.x && y === beacon.y) beacons.add(x);
-		}
-	});
-	return covered.size - beacons.size;
+		for (let x = minX; x <= maxX; x++) acc.set(x, x === beacon.x && y === beacon.y);
+		return acc;
+	}, new Map<number, boolean>());
+	return marked.count() - marked.count((isBeacon) => isBeacon);
 }
 
 export const p2 = (input: string, searchSpace = 4000000): number | undefined => {
