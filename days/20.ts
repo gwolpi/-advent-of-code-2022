@@ -1,20 +1,21 @@
 import '../extension-methods.ts';
 
-type Node = {	value: number; next: Node; prev: Node; };
+type Coord = {	value: number; next: Coord; prev: Coord; };
 
-class LinkedList {
-	private nodes: Array<Node>;
-	private get lastNode(): Node { return this.nodes.at(-1)! }
+class EncryptedFile {
+	private nodes: Array<Coord>;
+	private get lastNode(): Coord { return this.nodes.at(-1)! }
 	private get length(): number { return this.nodes.length	}
 
-	constructor(values: Array<number>) {
+	constructor(input: string, encryptionKey = 1) {
+		const values = input.splitRows().map(x => +x * encryptionKey);
 		const [value, ...otherValues] = values;
-		const node = { value } as Node;
+		const node = { value } as Coord;
 		node.prev = node;
 		node.next = node;
-		this.nodes = [node as Node];
+		this.nodes = [node as Coord];
 		otherValues.forEach(value => {
-			const node: Node = {value, prev: this.lastNode, next: this.lastNode.next};
+			const node: Coord = {value, prev: this.lastNode, next: this.lastNode.next};
 			this.lastNode.next.prev = node;
 			this.lastNode.next = node;
 			this.nodes.push(node);
@@ -22,8 +23,8 @@ class LinkedList {
 		});
 	}
 
-	mix(amount = 1): LinkedList {
-		const swap = (node: Node, dir: 'next' | 'prev') => {
+	mix(amount = 1): EncryptedFile {
+		const swap = (node: Coord, dir: 'next' | 'prev') => {
 			const xdir = dir === 'next' ? 'prev' : 'next';
 			const swap = node[dir];
 			node[dir] = swap[dir];
@@ -53,7 +54,7 @@ class LinkedList {
 }
 
 export const p1 = (input: string): number =>
-	new LinkedList(input.splitRows().map(Number)).mix().coords();
+	new EncryptedFile(input).mix().coords();
 
 export const p2 = (input: string): number =>
-	new LinkedList(input.splitRows().map(x => +x * 811589153)).mix(10).coords();
+	new EncryptedFile(input, 811589153).mix(10).coords();
