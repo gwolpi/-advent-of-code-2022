@@ -13,12 +13,36 @@ class LinkedList {
 		node.prev = node;
 		node.next = node;
 		this.nodes = [node as Node];
-		otherValues.forEach(value => this.push(value));
+		otherValues.forEach(value => {
+			const node: Node = {value, prev: this.lastNode, next: this.lastNode.next};
+			this.lastNode.next.prev = node;
+			this.lastNode.next = node;
+			this.nodes.push(node);
+			return node;
+		});
 	}
 
 	mix(): LinkedList {
+		const swapNext = (node: Node) => {
+				const swap = node.next;
+				node.next = swap.next;
+				swap.prev = node.prev;
+				swap.next.prev = node;
+				swap.next = node;
+				node.prev.next = swap;
+				node.prev = swap;
+		}
+		const swapPrev = (node: Node) => {
+			const swap = node.prev;
+			node.prev = swap.prev;
+			swap.next = node.next;
+			swap.prev.next = node;
+			swap.prev = node;
+			node.next.prev = swap;
+			node.next = swap;
+		}
 		this.nodes.forEach((node) => {
-			const func = node.value > 0 ? this.swapNext : this.swapPrev;
+			const func = node.value > 0 ? swapNext : swapPrev;
 			const moves = Math.abs(node.value) % (this.length - 1);
 			for (let move = 0; move < moves; move++) func(node);
 		});
@@ -33,34 +57,6 @@ class LinkedList {
 			if (move % 1000 === 0) coords += node.value;
 		}
 		return coords;
-	}
-
-	private push(value: number) {
-		const node: Node = {value, prev: this.lastNode, next: this.lastNode.next};
-		this.lastNode.next.prev = node;
-		this.lastNode.next = node;
-		this.nodes.push(node);
-		return node;
-	}
-
-	private swapNext(node: Node) {
-		const swap = node.next;
-		node.next = swap.next;
-		swap.prev = node.prev;
-		swap.next.prev = node;
-		swap.next = node;
-		node.prev.next = swap;
-		node.prev = swap;
-	}
-
-	private swapPrev(node: Node) {
-		const swap = node.prev;
-		node.prev = swap.prev;
-		swap.next = node.next;
-		swap.prev.next = node;
-		swap.prev = node;
-		node.next.prev = swap;
-		node.next = swap;
 	}
 }
 
