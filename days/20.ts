@@ -24,14 +24,14 @@ class LinkedList {
 
 	mix(): LinkedList {
 		const swapNext = (node: Node) => {
-				const swap = node.next;
-				node.next = swap.next;
-				swap.prev = node.prev;
-				swap.next.prev = node;
-				swap.next = node;
-				node.prev.next = swap;
-				node.prev = swap;
-		}
+			const swap = node.next;
+			node.next = swap.next;
+			swap.prev = node.prev;
+			swap.next.prev = node;
+			swap.next = node;
+			node.prev.next = swap;
+			node.prev = swap;
+		};
 		const swapPrev = (node: Node) => {
 			const swap = node.prev;
 			node.prev = swap.prev;
@@ -40,7 +40,7 @@ class LinkedList {
 			swap.prev = node;
 			node.next.prev = swap;
 			node.next = swap;
-		}
+		};
 		this.nodes.forEach((node) => {
 			const func = node.value > 0 ? swapNext : swapPrev;
 			const moves = Math.abs(node.value) % (this.length - 1);
