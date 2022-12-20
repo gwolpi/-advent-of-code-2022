@@ -3,51 +3,17 @@ import '../extension-methods.ts';
 type Node = {	value: number; next: Node; prev: Node; };
 
 class LinkedList {
-	nodes: Array<Node>;
-
-	get lastNode(): Node {
-		return this.nodes.at(-1)!;
-	}
-
-	get length(): number {
-		return this.nodes.length
-	}
+	private nodes: Array<Node>;
+	private get lastNode(): Node { return this.nodes.at(-1)! }
+	private get length(): number { return this.nodes.length	}
 
 	constructor(values: Array<number>) {
-		const [firstValue, ...otherValues] = values;
-		const node = {value: firstValue} as Node;
+		const [value, ...otherValues] = values;
+		const node = { value } as Node;
 		node.prev = node;
 		node.next = node;
 		this.nodes = [node as Node];
-		for (const value of otherValues) this.push(value);
-	}
-
-	push(value: number) {
-		const node: Node = {value, prev: this.lastNode, next: this.lastNode.next};
-		this.lastNode.next.prev = node;
-		this.lastNode.next = node;
-		this.nodes.push(node);
-		return node;
-	}
-
-	swapNext(node: Node) {
-		const swap = node.next;
-		node.next = swap.next;
-		swap.prev = node.prev;
-		swap.next.prev = node;
-		swap.next = node;
-		node.prev.next = swap;
-		node.prev = swap;
-	}
-
-	swapPrev(node: Node) {
-		const swap = node.prev;
-		node.prev = swap.prev;
-		swap.next = node.next;
-		swap.prev.next = node;
-		swap.prev = node;
-		node.next.prev = swap;
-		node.next = swap;
+		otherValues.forEach(value => this.push(value));
 	}
 
 	mix(): LinkedList {
@@ -67,6 +33,34 @@ class LinkedList {
 			if (move % 1000 === 0) coords += node.value;
 		}
 		return coords;
+	}
+
+	private push(value: number) {
+		const node: Node = {value, prev: this.lastNode, next: this.lastNode.next};
+		this.lastNode.next.prev = node;
+		this.lastNode.next = node;
+		this.nodes.push(node);
+		return node;
+	}
+
+	private swapNext(node: Node) {
+		const swap = node.next;
+		node.next = swap.next;
+		swap.prev = node.prev;
+		swap.next.prev = node;
+		swap.next = node;
+		node.prev.next = swap;
+		node.prev = swap;
+	}
+
+	private swapPrev(node: Node) {
+		const swap = node.prev;
+		node.prev = swap.prev;
+		swap.next = node.next;
+		swap.prev.next = node;
+		swap.prev = node;
+		node.next.prev = swap;
+		node.next = swap;
 	}
 }
 
