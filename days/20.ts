@@ -1,28 +1,26 @@
 import '../extension-methods.ts';
 
-type Coord = {	value: number; next: Coord; prev: Coord; };
+type Node = {	value: number; next: Node; prev: Node; };
 
 class EncryptedFile {
-	private nodes: Array<Coord>;
-	private get lastNode(): Coord { return this.nodes.at(-1)! }
-	private get length(): number { return this.nodes.length	}
+	private nodes: Array<Node>;
 
 	constructor(input: string, encryptionKey = 1, mixAmount = 1) {
 		const values = input.splitRows().map(x => +x * encryptionKey);
 		const [value, ...otherValues] = values;
-		const node = { value } as Coord;
+		const node = { value } as Node;
 		node.prev = node;
 		node.next = node;
-		this.nodes = [node as Coord];
+		this.nodes = [node as Node];
 		otherValues.forEach(value => {
-			const node: Coord = {value, prev: this.lastNode, next: this.lastNode.next};
-			this.lastNode.next.prev = node;
-			this.lastNode.next = node;
+			const lastNode = this.nodes.at(-1)!
+			const node: Node = {value, prev: lastNode, next: lastNode.next};
+			lastNode.next.prev = node;
+			lastNode.next = node;
 			this.nodes.push(node);
-			return node;
 		});
 
-		const swap = (node: Coord, dir: 'next' | 'prev') => {
+		const swap = (node: Node, dir: 'next' | 'prev') => {
 			const xdir = dir === 'next' ? 'prev' : 'next';
 			const swap = node[dir];
 			node[dir] = swap[dir];
@@ -34,8 +32,8 @@ class EncryptedFile {
 		};
 		for (let i = 0; i < mixAmount; i++)
 			this.nodes.forEach((node) => {
-				const moves = Math.abs(node.value) % (this.length - 1);
-				for (let move = 0; move < moves; move++) swap(node, node.value > 0 ? 'next' : 'prev');
+				for (let move = 0; move < Math.abs(node.value) % (this.nodes.length - 1); move++)
+					swap(node, node.value > 0 ? 'next' : 'prev');
 			});
 	}
 
