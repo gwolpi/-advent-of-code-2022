@@ -22,30 +22,22 @@ class LinkedList {
 		});
 	}
 
-	mix(): LinkedList {
-		const swapNext = (node: Node) => {
-			const swap = node.next;
-			node.next = swap.next;
-			swap.prev = node.prev;
-			swap.next.prev = node;
-			swap.next = node;
-			node.prev.next = swap;
-			node.prev = swap;
+	mix(amount = 1): LinkedList {
+		const swap = (node: Node, dir: 'next' | 'prev') => {
+			const xdir = dir === 'next' ? 'prev' : 'next';
+			const swap = node[dir];
+			node[dir] = swap[dir];
+			swap[xdir] = node[xdir];
+			swap[dir][xdir] = node;
+			swap[dir] = node;
+			node[xdir][dir] = swap;
+			node[xdir] = swap;
 		};
-		const swapPrev = (node: Node) => {
-			const swap = node.prev;
-			node.prev = swap.prev;
-			swap.next = node.next;
-			swap.prev.next = node;
-			swap.prev = node;
-			node.next.prev = swap;
-			node.next = swap;
-		};
-		this.nodes.forEach((node) => {
-			const func = node.value > 0 ? swapNext : swapPrev;
-			const moves = Math.abs(node.value) % (this.length - 1);
-			for (let move = 0; move < moves; move++) func(node);
-		});
+		for (let i = 0; i < amount; i++)
+			this.nodes.forEach((node) => {
+				const moves = Math.abs(node.value) % (this.length - 1);
+				for (let move = 0; move < moves; move++) swap(node, node.value > 0 ? 'next' : 'prev');
+			});
 		return this;
 	}
 
@@ -63,8 +55,5 @@ class LinkedList {
 export const p1 = (input: string): number =>
 	new LinkedList(input.splitRows().map(Number)).mix().coords();
 
-export const p2 = (input: string): number => {
-	const list = new LinkedList(input.splitRows().map(x => +x * 811589153));
-	for (let round = 1; round <= 10; round++) list.mix();
-	return list.coords();
-}
+export const p2 = (input: string): number =>
+	new LinkedList(input.splitRows().map(x => +x * 811589153)).mix(10).coords();
