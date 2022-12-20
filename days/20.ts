@@ -7,7 +7,7 @@ class EncryptedFile {
 	private get lastNode(): Coord { return this.nodes.at(-1)! }
 	private get length(): number { return this.nodes.length	}
 
-	constructor(input: string, encryptionKey = 1) {
+	constructor(input: string, encryptionKey = 1, mixAmount = 1) {
 		const values = input.splitRows().map(x => +x * encryptionKey);
 		const [value, ...otherValues] = values;
 		const node = { value } as Coord;
@@ -21,9 +21,7 @@ class EncryptedFile {
 			this.nodes.push(node);
 			return node;
 		});
-	}
 
-	mix(amount = 1): EncryptedFile {
 		const swap = (node: Coord, dir: 'next' | 'prev') => {
 			const xdir = dir === 'next' ? 'prev' : 'next';
 			const swap = node[dir];
@@ -34,12 +32,11 @@ class EncryptedFile {
 			node[xdir][dir] = swap;
 			node[xdir] = swap;
 		};
-		for (let i = 0; i < amount; i++)
+		for (let i = 0; i < mixAmount; i++)
 			this.nodes.forEach((node) => {
 				const moves = Math.abs(node.value) % (this.length - 1);
 				for (let move = 0; move < moves; move++) swap(node, node.value > 0 ? 'next' : 'prev');
 			});
-		return this;
 	}
 
 	coords(): number {
@@ -54,7 +51,7 @@ class EncryptedFile {
 }
 
 export const p1 = (input: string): number =>
-	new EncryptedFile(input).mix().coords();
+	new EncryptedFile(input).coords();
 
 export const p2 = (input: string): number =>
-	new EncryptedFile(input, 811589153).mix(10).coords();
+	new EncryptedFile(input, 811589153, 10).coords();
