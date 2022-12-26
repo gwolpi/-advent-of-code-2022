@@ -180,7 +180,7 @@ export const p2 = (input: string): number => {
 		}
 	}
 
-	const remaining = 1_000_000_000_000 - placed;
+	const remaining = 1e12 - placed;
 	const gainedPer = tallestPoint - startPoint;
 	const reps = Math.floor(remaining / (placed - startPlaced));
 	const gained = reps * gainedPer;
