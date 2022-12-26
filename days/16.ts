@@ -23,7 +23,7 @@ function processTrack(distances: Map<string, number>, start: string, time: numbe
 	}, [opened] as { [key: string]: number }[])
 }
 
-
+// Inspired by https://github.com/Thiesjoo/; thank you, I would have never figured this out on my own
 const breadthFirstSearch = (start: string, end: string, graph: ValveGraph) => {
 	const queue = [] as string[][];
 	const visited = new Set<string>();
